@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+require 'rubiler'
+
+# read source file
+error('no input file given') if ARGV.empty?
+source = File.read(ARGV.first)
+
+# transpile source
+lexer   = Lexer.new(source)
+emitter = Emitter.new('out.c')
+parser  = Parser.new(lexer, emitter)
+
+# write output file
+parser.program
+emitter.write_file
